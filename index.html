@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Cucabeludo</title>
+  <title>Lara do zap 💖</title>
   <style>
     body {
       margin: 0;
@@ -30,6 +30,7 @@ const heartParticles = [];
 const heartPoints = [];
 const nameParticles = [];
 const namePoints = [];
+const glowParticles = [];
 
 function heartFunction(t) {
   const x = 16 * Math.pow(Math.sin(t), 3);
@@ -37,19 +38,21 @@ function heartFunction(t) {
   return {x, y};
 }
 
-for (let t = 0; t < Math.PI*2; t += 0.1) {
+// pontos do coração
+for (let t = 0; t < Math.PI*2; t += 0.08) {
   const {x, y} = heartFunction(t);
   heartPoints.push({
-    x: canvas.width/2 + x*20,
-    y: canvas.height/2 + y*20
+    x: canvas.width/2 + x*22,
+    y: canvas.height/2 + y*22
   });
 }
 
-for (let i = 0; i < 200; i++) {
+// partículas do coração
+for (let i = 0; i < 400; i++) {
   const target = heartPoints[Math.floor(Math.random()*heartPoints.length)];
   heartParticles.push({
     x: Math.random()*canvas.width,
-    y: canvas.height + Math.random()*200,
+    y: canvas.height + Math.random()*300,
     targetX: target.x,
     targetY: target.y,
     speed: 0.02 + Math.random()*0.02,
@@ -57,14 +60,15 @@ for (let i = 0; i < 200; i++) {
   });
 }
 
+// gerar pontos do texto
 ctx.font = "bold 120px Arial";
 ctx.fillStyle = "white";
 ctx.textAlign = "center";
-ctx.fillText("Cucabeludo", canvas.width/2, canvas.height/2 - 150);
+ctx.fillText("Lara do zap", canvas.width/2, canvas.height/2 - 150);
 
 const imageData = ctx.getImageData(0,0,canvas.width,canvas.height);
-for (let y = 0; y < canvas.height; y += 6) {
-  for (let x = 0; x < canvas.width; x += 6) {
+for (let y = 0; y < canvas.height; y += 5) {
+  for (let x = 0; x < canvas.width; x += 5) {
     const index = (y*canvas.width + x) * 4;
     if (imageData.data[index+3] > 128) {
       namePoints.push({x, y});
@@ -72,11 +76,12 @@ for (let y = 0; y < canvas.height; y += 6) {
   }
 }
 
-for (let i = 0; i < 300; i++) {
+// partículas do nome
+for (let i = 0; i < 500; i++) {
   const target = namePoints[Math.floor(Math.random()*namePoints.length)];
   nameParticles.push({
     x: Math.random()*canvas.width,
-    y: -Math.random()*200,
+    y: -Math.random()*300,
     targetX: target.x,
     targetY: target.y,
     speed: 0.02 + Math.random()*0.02,
@@ -84,24 +89,56 @@ for (let i = 0; i < 300; i++) {
   });
 }
 
+// partículas de brilho rosa (glow)
+for (let i = 0; i < 120; i++) {
+  glowParticles.push({
+    x: Math.random()*canvas.width,
+    y: Math.random()*canvas.height,
+    r: Math.random()*3 + 2,
+    alpha: Math.random(),
+    speed: 0.01 + Math.random()*0.02
+  });
+}
+
+let time = 0;
+
 function animate() {
-  ctx.fillStyle = "rgba(0,0,0,0.2)";
+  ctx.fillStyle = "rgba(0,0,0,0.25)";
   ctx.fillRect(0,0,canvas.width,canvas.height);
 
-  function drawParticles(list) {
+  time += 0.05;
+  const pulse = 1 + Math.sin(time) * 0.08; // batimento do coração
+
+  function drawParticles(list, pulseEffect=false) {
     for (let p of list) {
       p.x += (p.targetX - p.x) * p.speed;
       p.y += (p.targetY - p.y) * p.speed;
 
       ctx.fillStyle = p.color;
       ctx.beginPath();
-      ctx.arc(p.x, p.y, 3, 0, Math.PI*2);
+      ctx.arc(
+        p.x, p.y, 
+        pulseEffect ? 3*pulse : 3, 
+        0, Math.PI*2
+      );
       ctx.fill();
     }
   }
 
-  drawParticles(heartParticles);
-  drawParticles(nameParticles);
+  // partículas rosa brilhosas
+  for (let g of glowParticles) {
+    g.alpha += g.speed * (Math.random() > 0.5 ? 1 : -1);
+    if (g.alpha > 1) g.alpha = 1;
+    if (g.alpha < 0) g.alpha = 0;
+
+    ctx.fillStyle = `rgba(255, 105, 180, ${g.alpha})`; // rosa neon
+    ctx.beginPath();
+    ctx.arc(g.x, g.y, g.r, 0, Math.PI*2);
+    ctx.fill();
+  }
+
+  drawParticles(heartParticles, true);  // coração pulsa
+  drawParticles(nameParticles, false);  // texto fixo
 
   requestAnimationFrame(animate);
 }
