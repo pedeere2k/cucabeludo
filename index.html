@@ -38,7 +38,6 @@ function heartFunction(t) {
   return {x, y};
 }
 
-// pontos do coração
 for (let t = 0; t < Math.PI*2; t += 0.08) {
   const {x, y} = heartFunction(t);
   heartPoints.push({
@@ -47,8 +46,7 @@ for (let t = 0; t < Math.PI*2; t += 0.08) {
   });
 }
 
-// partículas do coração
-for (let i = 0; i < 400; i++) {
+for (let i = 0; i < 800; i++) {
   const target = heartPoints[Math.floor(Math.random()*heartPoints.length)];
   heartParticles.push({
     x: Math.random()*canvas.width,
@@ -60,7 +58,6 @@ for (let i = 0; i < 400; i++) {
   });
 }
 
-// gerar pontos do texto
 ctx.font = "bold 120px Arial";
 ctx.fillStyle = "white";
 ctx.textAlign = "center";
@@ -76,7 +73,6 @@ for (let y = 0; y < canvas.height; y += 5) {
   }
 }
 
-// partículas do nome
 for (let i = 0; i < 500; i++) {
   const target = namePoints[Math.floor(Math.random()*namePoints.length)];
   nameParticles.push({
@@ -89,7 +85,6 @@ for (let i = 0; i < 500; i++) {
   });
 }
 
-// partículas de brilho rosa (glow)
 for (let i = 0; i < 120; i++) {
   glowParticles.push({
     x: Math.random()*canvas.width,
@@ -107,7 +102,7 @@ function animate() {
   ctx.fillRect(0,0,canvas.width,canvas.height);
 
   time += 0.05;
-  const pulse = 1 + Math.sin(time) * 0.08; // batimento do coração
+  const pulse = 1 + Math.sin(time) * 0.08; 
 
   function drawParticles(list, pulseEffect=false) {
     for (let p of list) {
@@ -125,20 +120,19 @@ function animate() {
     }
   }
 
-  // partículas rosa brilhosas
   for (let g of glowParticles) {
     g.alpha += g.speed * (Math.random() > 0.5 ? 1 : -1);
     if (g.alpha > 1) g.alpha = 1;
     if (g.alpha < 0) g.alpha = 0;
 
-    ctx.fillStyle = `rgba(255, 105, 180, ${g.alpha})`; // rosa neon
+    ctx.fillStyle = `rgba(255, 105, 180, ${g.alpha})`; 
     ctx.beginPath();
     ctx.arc(g.x, g.y, g.r, 0, Math.PI*2);
     ctx.fill();
   }
 
-  drawParticles(heartParticles, true);  // coração pulsa
-  drawParticles(nameParticles, false);  // texto fixo
+  drawParticles(heartParticles, true);  
+  drawParticles(nameParticles, false);  
 
   requestAnimationFrame(animate);
 }
